@@ -25,7 +25,7 @@ h2{font-size:1.05rem;margin:0 0 12px}
 .panel{display:none}.panel.on{display:block}
 .two{display:grid;gap:16px;grid-template-columns:2fr 1fr}
 .two.eq{grid-template-columns:1fr 1fr}
-@media(max-width:1800px){.two,.two.eq{grid-template-columns:1fr}}
+@media(max-width:800px){.two,.two.eq{grid-template-columns:1fr}}
 .stats{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px}
 .stats .card{flex:1 1 200px;margin:0}
 .stats b{display:block;font-size:1.4rem}
@@ -71,7 +71,7 @@ tfoot td{font-weight:700;background:var(--soft)}
 [data-theme=red]{--main:#8f1d1d;--c1:#b83232;--c2:#f0b7ac;--c3:#d9a032;--c4:#7a5c2e;--c5:#e08a7a;--c6:#6e1a1a;--bg:#f8f1ee;--tint:#f5e3de;--soft:#fcf7f5}
 body{font-family:"IBM Plex Sans Thai","Noto Sans Thai",Tahoma,sans-serif;background:var(--bg)}
 .top{background:var(--main);color:#fff;padding:28px 0 84px}
-.top .in{max-width:1100px;margin:0 auto;padding:0 16px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-start}
+.top .in{max-width:1800px;margin:0 auto;padding:0 16px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-start}
 .top h1{font-size:1.55rem;margin:0;color:#fff;font-weight:600}
 .top p{margin:6px 0 0;opacity:.85}
 .top .meta{text-align:right;font-size:.85rem}
@@ -79,7 +79,7 @@ body{font-family:"IBM Plex Sans Thai","Noto Sans Thai",Tahoma,sans-serif;backgro
 .sws{display:flex;gap:10px;justify-content:flex-end;margin-bottom:8px}
 .sw{width:22px;height:22px;border-radius:50%;border:2px solid #fff;cursor:pointer;padding:0}
 .sw[aria-pressed=true]{outline:2px solid #fff;outline-offset:2px}
-.kpis{max-width:1100px;margin:-60px auto 20px;padding:0 16px;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.kpis{max-width:1800px;margin:-60px auto 20px;padding:0 16px;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
 .kpi{background:var(--card);border-radius:18px;padding:18px 22px;box-shadow:0 8px 24px rgba(20,30,40,.12)}
 .kpi span{color:var(--muted);font-size:.85rem}
 .kpi b{display:block;font-size:2.2rem;line-height:1.25;color:var(--main);font-weight:600}
@@ -105,6 +105,7 @@ tfoot td{background:var(--tint)}
   <div class="kpi"><span>นักศึกษาทุนปัจจุบัน (คน)</span><b id="total">102</b><small>ไม่รวมพ้นสภาพ/ลาออก/ยุติการรับทุน</small></div>
   <div class="kpi"><span>สถานะปกติ (คน)</span><b id="kOk">-</b></div>
   <div class="kpi"><span>สำเร็จการศึกษา (คน)</span><b id="kGrad">-</b></div>
+  <div class="kpi"><span>นักศึกษาไทย (คน)</span><b id="kThai">-</b></div>
   <div class="kpi"><span>นักศึกษาต่างชาติ (คน)</span><b id="kFor">-</b></div>
 </div>
 <div class="wrap">
@@ -184,7 +185,7 @@ tfoot td{background:var(--tint)}
 <script>
 /* ===== ตั้งค่าการเชื่อม Google Sheets ===== */
 const CONFIG = {
-  SHEET_ID: "",   // วางลิงก์ของ Google Sheets ทั้งเส้น หรือเฉพาะ ID (ข้อความระหว่าง /d/ และ /edit) ก็ได้
+  SHEET_ID: "1xHVfFMGFoEybr3aeJgG2kf2PVgO4ejeJgzs7H78hGn8",   // วางลิงก์ของ Google Sheets ทั้งเส้น หรือเฉพาะ ID (ข้อความระหว่าง /d/ และ /edit) ก็ได้
   TABS: ["สำนักวิชา", "ประเทศ", "ระดับ", "โครงการทุน", "ตั้งค่า"],   // ต้องตรงกับชื่อแท็บใน Sheets
   REFRESH_SECONDS: 60
 };
@@ -281,7 +282,7 @@ function donut(dId, items, total, tId) {
 /* ===== แสดงผลทั้งหน้า ===== */
 function render(D) {
   const sc = D.schools, ok = sum(sc, 1), grad = sum(sc, 2), drop = sum(sc, 3), total = ok + grad;
-  $("total").textContent = fmt(total); $("asof").textContent = "ข้อมูล ณ วันที่ " + D.asOf; $("kOk").textContent = ok; $("kGrad").textContent = grad; $("kFor").textContent = sum(sc, 5);
+  $("total").textContent = fmt(total); $("asof").textContent = "ข้อมูล ณ วันที่ " + D.asOf; $("kOk").textContent = ok; $("kGrad").textContent = grad; $("kFor").textContent = sum(sc, 5); $("kThai").textContent = sum(sc, 4);
 
   // แท็บสถานะการศึกษา
   hbar("stBar", sc.map(r => [r[0], [r[1], r[2]]]), ["ปกติ", "สำเร็จการศึกษา"], [SAGE, PALE]);
