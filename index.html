@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>สรุปข้อมูลนักศึกษาทุนระดับบัณฑิตศึกษา (สำนักงานบัณฑิตศึกษา)</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f6f4ef;--card:#fff;--ink:#3b3a36;--muted:#7a776f;--line:#e4e0d6;--sage:#8ba392;--sand:#d3a577;--pale:#e8edc9;--rust:#c0702a;--soft:#faf9f6}
@@ -59,55 +58,18 @@ tfoot td{font-weight:700;background:var(--soft)}
 .vb i{display:block;width:100%;border-radius:6px 6px 0 0;margin-top:4px}
 .vl{display:flex;gap:12px;margin:6px 0 0 32px;font-size:.75rem;color:var(--muted);text-align:center}
 .vl span{flex:1}
-
-/* ===== v2: ธีมสีและรูปแบบใหม่ ===== */
-:root,[data-theme=green]{--main:#0e5a4a;--c1:#2f8f78;--c2:#a8d5c4;--c3:#e0a84f;--c4:#4a86b8;--c5:#6bb7a0;--c6:#2b5d52;--bg:#eef3f1;--tint:#e3efea;--soft:#f6faf8}
-[data-theme=warm]{--main:#738435;--c1:#b8532a;--c2:#a2b05a;--c3:#a2b05a;--c4:#c3cc8f;--c5:#e0a07f;--c6:#7a3416;--bg:#f6f5e4;--tint:#e9eccb;--soft:#fafaf0;--line:#dfe2c4;--muted:#6d6a52;--ink:#33301f;--rust:#b8532a}
-[data-theme=warm] h2,[data-theme=warm] th{color:#4b5a24}
-[data-theme=warm] .kpi b{color:var(--c1)}
-[data-theme=warm] .tabs button[aria-selected=true]{background:var(--c1)}
-[data-theme=warm] .top #src{color:#f3d9a6!important}
-[data-theme=blue]{--main:#1b3a8c;--c1:#2f5fd0;--c2:#a9c0f2;--c3:#f2a33a;--c4:#16a0a8;--c5:#7f9fe6;--c6:#233f86;--bg:#eef2fa;--tint:#e1e8f8;--soft:#f6f8fd}
-[data-theme=red]{--main:#8f1d1d;--c1:#b83232;--c2:#f0b7ac;--c3:#d9a032;--c4:#7a5c2e;--c5:#e08a7a;--c6:#6e1a1a;--bg:#f8f1ee;--tint:#f5e3de;--soft:#fcf7f5}
-body{font-family:"IBM Plex Sans Thai","Noto Sans Thai",Tahoma,sans-serif;background:var(--bg)}
-.top{background:var(--main);color:#fff;padding:28px 0 84px}
-.top .in{max-width:1100px;margin:0 auto;padding:0 16px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-start}
-.top h1{font-size:1.55rem;margin:0;color:#fff;font-weight:600}
-.top p{margin:6px 0 0;opacity:.85}
-.top .meta{text-align:right;font-size:.85rem}
-.top #src{color:#ffe08a!important}
-.sws{display:flex;gap:10px;justify-content:flex-end;margin-bottom:8px}
-.sw{width:22px;height:22px;border-radius:50%;border:2px solid #fff;cursor:pointer;padding:0}
-.sw[aria-pressed=true]{outline:2px solid #fff;outline-offset:2px}
-.kpis{max-width:1100px;margin:-60px auto 20px;padding:0 16px;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
-.kpi{background:var(--card);border-radius:18px;padding:18px 22px;box-shadow:0 8px 24px rgba(20,30,40,.12)}
-.kpi span{color:var(--muted);font-size:.85rem}
-.kpi b{display:block;font-size:2.2rem;line-height:1.25;color:var(--main);font-weight:600}
-.kpi small{color:var(--muted);font-size:.75rem}
-.wrap{padding-top:0}
-.card{border:0;border-radius:18px;box-shadow:0 2px 14px rgba(20,30,40,.07)}
-h2{font-weight:600;color:var(--main)}
-.tabs{border:0;gap:8px;margin:0 0 18px}
-.tabs button{border:0;border-radius:999px;padding:9px 20px;background:var(--card);color:var(--muted);box-shadow:0 1px 4px rgba(20,30,40,.08)}
-.tabs button[aria-selected=true]{background:var(--main);color:#fff;border-radius:999px}
-th{background:var(--tint);color:var(--main);font-weight:600}
-tfoot td{background:var(--tint)}
-.grid th,.grid td,th,td{border-left:0;border-right:0;border-top:0;border-bottom:1px solid var(--line)}
 </style>
 </head>
 <body>
-<div class="top"><div class="in">
-  <div><h1>สรุปข้อมูลนักศึกษาทุนระดับบัณฑิตศึกษา</h1><p>สำนักงานบัณฑิตศึกษา · รายงานสถานะภาพรวมและผลการดำเนินงานทุนการศึกษา</p></div>
-  <div class="meta"><div class="sws"><button class="sw" data-th="warm" style="background:linear-gradient(135deg,#b8532a 50%,#6f7d34 50%)" title="อบอุ่น" aria-label="ธีมอบอุ่น"></button><button class="sw" data-th="green" style="background:#2f8f78" title="เขียว" aria-label="ธีมเขียว"></button><button class="sw" data-th="blue" style="background:#2f5fd0" title="น้ำเงิน" aria-label="ธีมน้ำเงิน"></button><button class="sw" data-th="red" style="background:#b83232" title="แดง-ทอง" aria-label="ธีมแดง-ทอง"></button></div>
-  <div id="asof"></div><div id="src"></div></div>
-</div></div>
-<div class="kpis">
-  <div class="kpi"><span>นักศึกษาทุนปัจจุบัน (คน)</span><b id="total">102</b><small>ไม่รวมพ้นสภาพ/ลาออก/ยุติการรับทุน</small></div>
-  <div class="kpi"><span>สถานะปกติ (คน)</span><b id="kOk">-</b></div>
-  <div class="kpi"><span>สำเร็จการศึกษา (คน)</span><b id="kGrad">-</b></div>
-  <div class="kpi"><span>นักศึกษาต่างชาติ (คน)</span><b id="kFor">-</b></div>
-</div>
 <div class="wrap">
+  <h1>สรุปข้อมูลนักศึกษาทุนระดับบัณฑิตศึกษา (สำนักงานบัณฑิตศึกษา)</h1>
+  <p class="sub">รายงานสถานะภาพรวมและผลการดำเนินงานทุนการศึกษา</p>
+
+  <div class="card hero">
+    <div><strong>จำนวนนักศึกษาทุนปัจจุบัน</strong><br><small>จำนวนนักศึกษาทุนสะสม (ไม่รวมนักศึกษาที่พ้นสภาพ/ลาออก/ยุติการรับทุน)</small></div>
+    <div style="text-align:right"><span class="num" id="total">102</span> คน<br><small id="asof"></small><br><small id="src" style="color:var(--rust)"></small></div>
+  </div>
+
   <div class="tabs" role="tablist">
     <button role="tab" aria-selected="false" data-t="p0">📜 ประเภททุนการศึกษา</button>
     <button role="tab" aria-selected="true" data-t="p1">📊 สถานะการศึกษา</button>
@@ -191,9 +153,7 @@ const CONFIG = {
 
 const $ = id => document.getElementById(id);
 const fmt = (n, d = 0) => n.toLocaleString("en-US", {minimumFractionDigits: d, maximumFractionDigits: d});
-let SAGE, PALE, SAND, BLUE, C5, C6;
-function readTheme() { const g = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim(); SAGE = g("--c1"); PALE = g("--c2"); SAND = g("--c3"); BLUE = g("--c4"); C5 = g("--c5"); C6 = g("--c6"); }
-readTheme();
+const SAGE = "#8ba392", SAND = "#d3a577", PALE = "#e8edc9", BLUE = "#6f8fb5";
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 const sum = (a, i) => a.reduce((s, r) => s + r[i], 0);
 
@@ -259,13 +219,12 @@ async function fetchAll() {
 }
 
 /* ===== ตัวช่วยวาดกราฟ ===== */
-const txt = c => { if (!/^#[0-9a-f]{6}$/i.test(c)) return "#33301f"; const n = parseInt(c.slice(1), 16); return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) > 150 ? "#2a2a1a" : "#fff"; };
 function hbar(id, rows, names, colors) {
   const m = Math.max(1, ...rows.map(r => r[1].reduce((a, b) => a + b, 0)));
   const step = m <= 40 ? 5 : m <= 80 ? 10 : 20, max = Math.ceil(m / step) * step, n = max / step;
   const col = i => rows.reduce((s, r) => s + r[1][i], 0);
   const legend = names.map((t, i) => `<span><i class="dot" style="background:${colors[i]}"></i>${t} (${col(i)} คน)</span>`).join("");
-  const body = rows.map(([l, v]) => `<div class="hrow"><div class="hl">${l}</div><div class="ht" style="--w:${100 / n}%">${v.map((x, i) => x ? `<div style="width:${x / max * 100}%;background:${colors[i]};color:${txt(colors[i])}">${x}</div>` : "").join("")}<b>(${v.reduce((a, b) => a + b, 0)})</b></div></div>`).join("");
+  const body = rows.map(([l, v]) => `<div class="hrow"><div class="hl">${l}</div><div class="ht" style="--w:${100 / n}%">${v.map((x, i) => x ? `<div style="width:${x / max * 100}%;background:${colors[i]}">${x}</div>` : "").join("")}<b>(${v.reduce((a, b) => a + b, 0)})</b></div></div>`).join("");
   let ticks = ""; for (let t = 0; t <= max; t += step) ticks += `<span>${t}</span>`;
   $(id).innerHTML = `<div class="legend">${legend}</div>${body}<div class="axis"><span></span><div>${ticks}</div></div>`;
 }
@@ -281,11 +240,11 @@ function donut(dId, items, total, tId) {
 /* ===== แสดงผลทั้งหน้า ===== */
 function render(D) {
   const sc = D.schools, ok = sum(sc, 1), grad = sum(sc, 2), drop = sum(sc, 3), total = ok + grad;
-  $("total").textContent = fmt(total); $("asof").textContent = "ข้อมูล ณ วันที่ " + D.asOf; $("kOk").textContent = ok; $("kGrad").textContent = grad; $("kFor").textContent = sum(sc, 5);
+  $("total").textContent = fmt(total); $("asof").textContent = "ข้อมูล ณ วันที่ " + D.asOf;
 
   // แท็บสถานะการศึกษา
   hbar("stBar", sc.map(r => [r[0], [r[1], r[2]]]), ["ปกติ", "สำเร็จการศึกษา"], [SAGE, PALE]);
-  const lvCol = [SAGE, C5, SAND, PALE], lv = D.levels.map((r, i) => [r[0], r[1] + r[2], lvCol[i % 4]]);
+  const lvCol = [SAGE, "#cdd5b0", SAND, PALE], lv = D.levels.map((r, i) => [r[0], r[1] + r[2], lvCol[i % 4]]);
   donut("lvD", lv, sum(lv.map(x => [0, x[1]]), 1));
   $("lvL").innerHTML = lv.map(([n, v, c]) => `<span><i class="dot" style="background:${c}"></i>${n} (${v} คน)</span>`).join("");
   $("stTb").innerHTML = sc.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="warn">${r[3]}</td><td><b>${r[1] + r[2] + r[3]}</b></td></tr>`).join("");
@@ -298,7 +257,7 @@ function render(D) {
   hbar("natBar", sc.filter(r => r[4] + r[5] > 0).map(r => [r[0], [r[4], r[5]]]), ["ไทย", "ต่างชาติ"], [SAGE, SAND]);
   hbar("lvNat", D.levels.map(r => [`${r[0]} (${r[1] + r[2]} คน)`, [r[1], r[2]]]), ["ไทย", "ต่างชาติ"], [SAGE, SAND]);
   donut("natD", [["ไทย", thai, SAGE], ["ต่างชาติ", foreign, SAND]], thai + foreign, "natT");
-  const cc = [SAGE, SAND, BLUE, C5, C6, SAGE, SAND, BLUE, C5];
+  const cc = ["#8ba392", "#d3a577", "#e8edc9", "#a6b5a8", "#c0702a", "#e8edc9", "#dc9a55", "#6b6f3a", "#2a3820"];
   const cmax = Math.max(10, Math.ceil(Math.max(...D.countries.map(c => c[1])) / 10) * 10);
   $("ctry").innerHTML = `<div class="vbars">${D.countries.map(([, v], i) => `<div class="vb">${v}<i style="height:${v / cmax * 100}%;background:${cc[i % cc.length]}"></i></div>`).join("")}</div><div class="vl">${D.countries.map(([n]) => `<span>${n}</span>`).join("")}</div><p class="note">แกนตั้ง: 0–${cmax} คน</p>`;
 
@@ -332,15 +291,6 @@ async function update() {
     console.error(e); setSrc("โหลดจาก Google Sheets ไม่สำเร็จ: " + e.message + " · แสดงข้อมูลล่าสุดที่มี");
   }
 }
-function setTheme(t) {
-  document.documentElement.dataset.theme = t;
-  try { localStorage.setItem("theme2", t); } catch (e) {}
-  readTheme(); if (loaded) render(D);
-  document.querySelectorAll(".sw").forEach(b => b.setAttribute("aria-pressed", b.dataset.th === t));
-}
-document.querySelectorAll(".sw").forEach(b => b.onclick = () => setTheme(b.dataset.th));
-let t0 = "warm"; try { t0 = localStorage.getItem("theme2") || t0; } catch (e) {}
-setTheme(t0);
 update(); setInterval(update, CONFIG.REFRESH_SECONDS * 1000);
 
 /* ===== แท็บ ===== */
