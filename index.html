@@ -110,6 +110,18 @@ h2.sec{margin:22px 4px 12px}
 .tag{display:inline-block;font-size:.72rem;padding:2px 10px;border-radius:999px;background:var(--tint);color:var(--ink);margin-left:8px;font-weight:500;vertical-align:2px}
 .grid td{text-align:center;font-variant-numeric:tabular-nums}
 .grid td:first-child{text-align:left}
+.stk{display:flex;flex-direction:column;width:100%;border-radius:6px 6px 0 0;overflow:hidden;margin-top:4px}
+.vb .stk i{display:flex;align-items:center;justify-content:center;border-radius:0;margin:0;font-size:.7rem;font-style:normal;font-weight:700}
+.vl small{display:block;font-size:.62rem;font-weight:400;line-height:1.3}
+.vb .stk{max-width:110px}
+.grp td{font-weight:700;background:var(--soft)}
+.sub td:first-child{padding-left:30px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(520px,100%),1fr));gap:16px}
+.pgrid .card{margin:0}
+.pm{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;font-size:.85rem;color:var(--muted);margin:2px 0 4px}
+.pm b{color:var(--ink);font-weight:600}
+.fdwrap{display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:center}
+@media(max-width:700px){.fdwrap{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -150,42 +162,68 @@ h2.sec{margin:22px 4px 12px}
         <tbody id="t1"></tbody><tfoot id="t1f"></tfoot>
       </table>
     </div>
+    <div class="card"><h2>จำนวนผู้รับทุนรายโครงการ แยกตามระดับและสถานะ <span class="tag">รายโครงการ</span></h2><div id="fdPpl" class="wide"></div></div>
+    <div class="card"><h2>สัดส่วนงบประมาณรายโครงการ <span class="tag">คิดเป็นร้อยละของงบประมาณรวมทั้งสิ้น</span></h2>
+      <div class="fdwrap">
+        <div class="donut" id="fdD"><span>-<small>ล้านบาท</small></span></div>
+        <div class="mini scroll"><table><thead><tr><th>โครงการทุน / ปีการศึกษา</th><th>งบประมาณ (บาท)</th><th>ร้อยละ</th></tr></thead><tbody id="fdT"></tbody></table></div>
+      </div>
+    </div>
+    <div id="recProjWrap">
+      <h2 class="sec">ผู้รับทุนรายโครงการ แยกตามสำนักวิชาและระดับการศึกษา <span class="tag">รายโครงการ</span></h2>
+      <p class="note" id="recProjN" style="color:var(--rust);font-weight:600;margin:0 4px 12px"></p>
+      <div class="pgrid" id="recProj"></div>
+    </div>
   </section>
 
   <!-- สถานะการศึกษา -->
   <section class="panel on" id="p1">
-    <div class="card"><h2>จำนวนนักศึกษาทุนแยกตามสำนักวิชา</h2><div id="stBar"></div></div>
     <div class="card scroll">
       <table>
         <thead><tr><th>สำนักวิชา</th><th>ปกติ</th><th>สำเร็จการศึกษา</th><th class="warn">พ้นสภาพ/ลาออก/ยุติการรับทุน</th><th>รวมทั้งสิ้น</th></tr></thead>
         <tbody id="stTb"></tbody><tfoot id="stTf"></tfoot>
       </table>
     </div>
+    <div class="card"><h2>จำนวนนักศึกษาทุนแยกตามสำนักวิชา <span class="tag">ไม่รวมนักศึกษาพ้นสภาพ/ลาออก/ยุติการรับทุน</span></h2><div id="stBar"></div></div>
+    
+    
     <div class="two eq">
       <div class="card mini"><h2>สัดส่วนระดับการศึกษา</h2>
         <div class="donut" id="lvD"><span>-<small>คน</small></span></div>
-        <table><thead><tr><th>ระดับ</th><th>จำนวน (คน)</th><th>ร้อยละ</th></tr></thead><tbody id="lvT"></tbody></table>
+        <table><thead><tr><th>ระดับ</th><th>ปกติ</th><th>สำเร็จการศึกษา</th><th>รวม (คน)</th><th>ร้อยละ</th></tr></thead><tbody id="lvT"></tbody></table>
       </div>
       <div class="card mini"><h2>สถานะการศึกษา (Educational Status)</h2>
         <div class="donut" id="stD"><span>-<small>คน</small></span></div>
         <table><thead><tr><th>สถานะ</th><th>จำนวน (คน)</th><th>ร้อยละ</th></tr></thead><tbody id="stT"></tbody></table>
         <p class="note" id="stN"></p>
+        <p class="note" id="stW" style="color:var(--rust);font-weight:600"></p>
       </div>
+    </div>
+    <div id="stProjWrap">
+      <h2 class="sec">สถานะการศึกษาของผู้รับทุนรายโครงการ แยกตามสำนักวิชา <span class="tag">รายโครงการ</span></h2>
+      <p class="note" id="stProjN" style="color:var(--rust);font-weight:600;margin:0 4px 12px"></p>
+      <div class="pgrid" id="stProj"></div>
     </div>
   </section>
 
   <!-- สัญชาติ -->
   <section class="panel" id="p2">
-    <div class="two">
-      <div class="card"><h2>นักศึกษาไทย/ต่างชาติ (ไม่รวมนักศึกษาพ้นสภาพฯ)</h2><div id="natBar"></div></div>
-      <div class="card"><h2>ระดับการศึกษาตามสัญชาติ</h2><div id="lvNat"></div></div>
-    </div>
+    <div class="card"><h2>นักศึกษาไทย/ต่างชาติ (ไม่รวมนักศึกษาพ้นสภาพฯ)</h2><div id="natBar"></div></div>
     <div class="two eq">
+      <div class="card mini"><h2>ระดับการศึกษาตามสัญชาติ</h2>
+        <div id="lvNat"></div>
+        <table style="margin-top:14px"><thead><tr><th>ระดับ</th><th>ไทย</th><th>ต่างชาติ</th><th>รวม</th></tr></thead><tbody id="lvNatT"></tbody></table>
+      </div>
       <div class="card mini"><h2>สัญชาติ (Nationality)</h2>
-        <div class="donut" id="natD"><span>102<small>คน</small></span></div>
+        <div class="donut" id="natD"><span>-<small>คน</small></span></div>
         <table><thead><tr><th>สัญชาติ</th><th>จำนวน (คน)</th><th>ร้อยละ</th></tr></thead><tbody id="natT"></tbody></table>
       </div>
-      <div class="card"><h2>จำนวนนักศึกษาแยกตามประเทศ</h2><div id="ctry"></div></div>
+    </div>
+    <div class="card"><h2>จำนวนนักศึกษาแยกตามประเทศ</h2><div id="ctry"></div></div>
+    <div id="ntProjWrap">
+      <h2 class="sec">ผู้รับทุนรายโครงการ แยกตามสำนักวิชา ประเทศ และระดับการศึกษา <span class="tag">รายโครงการ</span></h2>
+      <p class="note" id="ntProjN" style="color:var(--rust);font-weight:600;margin:0 4px 12px"></p>
+      <div class="pgrid" id="ntProj"></div>
     </div>
   </section>
 
@@ -210,6 +248,22 @@ h2.sec{margin:22px 4px 12px}
       </div>
     </div>
     <div class="card"><h2>ความคืบหน้าเทียบเป้าหมายผลงาน Q1 <span class="tag">รายโครงการ</span></h2><div id="pubGoal"></div></div>
+    <div id="pubProjWrap">
+      <h2 class="sec">ผลงานตีพิมพ์รายโครงการ แยกตามสำนักวิชา <span class="tag">รายโครงการ</span></h2>
+      <p class="note" id="pubProjN" style="color:var(--rust);font-weight:600;margin:0 4px 12px"></p>
+      <div class="pgrid" id="pubProj"></div>
+    </div>
+    <div id="pubSchWrap" style="display:none">
+      <h2 class="sec">ผลงานตีพิมพ์แยกตามสำนักวิชา <span class="tag">รายสำนักวิชา</span></h2>
+      <div class="two eq">
+        <div class="card"><div id="pubSchBar"></div></div>
+        <div class="card mini">
+          <table><thead><tr><th>สำนักวิชา</th><th>Q1</th><th>Q2</th><th>รวม (เรื่อง)</th><th>ร้อยละ</th></tr></thead><tbody id="pubSchT"></tbody></table>
+          <p class="note">แสดงเฉพาะสำนักวิชาที่มีผลงานตีพิมพ์ เรียงจากมากไปน้อย</p>
+          <p class="note" id="pubSchW" style="color:var(--rust);font-weight:600"></p>
+        </div>
+      </div>
+    </div>
   </section>
 </div>
 
@@ -218,6 +272,9 @@ h2.sec{margin:22px 4px 12px}
 const CONFIG = {
   SHEET_ID: "1xHVfFMGFoEybr3aeJgG2kf2PVgO4ejeJgzs7H78hGn8",   // วางลิงก์ของ Google Sheets ทั้งเส้น หรือเฉพาะ ID (ข้อความระหว่าง /d/ และ /edit) ก็ได้
   TABS: ["สำนักวิชา", "ประเทศ", "ระดับ", "โครงการทุน", "ตั้งค่า"],   // ต้องตรงกับชื่อแท็บใน Sheets
+  NAT_TAB: "ผู้รับทุนตามประเทศ",   // (ไม่บังคับ) แท็บผู้รับทุนรายโครงการ x ประเทศ x สำนักวิชา x ระดับ
+  REC_TAB: "ผู้รับทุนรายโครงการ",   // (ไม่บังคับ) แท็บผู้รับทุนรายโครงการ x สำนักวิชา x ระดับ
+  PUB_TAB: "ผลงานรายโครงการ",   // (ไม่บังคับ) แท็บผลงานรายโครงการ x สำนักวิชา x Q
   REFRESH_SECONDS: 60
 };
 
@@ -256,7 +313,7 @@ function parseCSV(t) {
 }
 const num = v => Number(String(v ?? "").replace(/,/g, "").trim()) || 0;
 const sheetId = () => (CONFIG.SHEET_ID.match(/\/d\/([\w-]+)/) || [])[1] || CONFIG.SHEET_ID.trim();
-function tab(name) {
+function tab(name, wait = 10000) {
   // ใช้วิธี JSONP (โหลดผ่าน <script>) เพื่อให้ทำงานได้แม้เปิดไฟล์จากเครื่อง (file:///) ไม่ติดข้อจำกัด CORS
   return new Promise((resolve, reject) => {
     const cb = "gv_" + Math.random().toString(36).slice(2);
@@ -270,34 +327,45 @@ function tab(name) {
         return reject(new Error(`Google แจ้งข้อผิดพลาด (แท็บ "${name}"): ${er.detailed_message || er.message || r.status}`));
       }
       const rows = r.table.rows.map(x => x.c.map(c => (c && c.v != null) ? c.v : ""));
-      resolve(rows.filter(x => x.some(v => String(v).trim() !== "")));
+      const out = rows.filter(x => x.some(v => String(v).trim() !== ""));
+      out.labels = (r.table.cols || []).map(c => String((c && c.label) || "").trim());
+      resolve(out);
     };
     s.onerror = () => { done(); reject(new Error(`เชื่อมต่อ Google ไม่ได้ (แท็บ "${name}") ตรวจอินเทอร์เน็ตหรือ ID`)); };
-    timer = setTimeout(() => { done(); reject(new Error(`ไม่ได้รับข้อมูลภายใน 10 วินาที (แท็บ "${name}") ตรวจว่าแชร์เป็น "ทุกคนที่มีลิงก์" และไฟล์เป็น Google ชีต ไม่ใช่ .xlsx`)); }, 10000);
+    timer = setTimeout(() => { done(); reject(new Error(`ไม่ได้รับข้อมูลภายใน 10 วินาที (แท็บ "${name}") ตรวจว่าแชร์เป็น "ทุกคนที่มีลิงก์" และไฟล์เป็น Google ชีต ไม่ใช่ .xlsx`)); }, wait);
     s.src = `https://docs.google.com/spreadsheets/d/${sheetId()}/gviz/tq?tqx=out:json;responseHandler:${cb}&headers=1&sheet=${encodeURIComponent(name)}&_=${Date.now()}`;
     document.head.appendChild(s);
   });
 }
 async function fetchAll() {
-  const [s, c, l, f, t] = await Promise.all(CONFIG.TABS.map(tab));
+  const [s, c, l, f, t, pp, rr, nn] = await Promise.all([...CONFIG.TABS.map(n => tab(n)), tab(CONFIG.PUB_TAB, 5000).catch(() => null), tab(CONFIG.REC_TAB, 5000).catch(() => null), tab(CONFIG.NAT_TAB, 5000).catch(() => null)]);
   const as = (t.find(r => r[0].trim() === "วันที่ข้อมูล") || [])[1];
   return {
     asOf: as || D.asOf,
-    schools: s.map(r => [esc(r[0]), ...r.slice(1, 6).map(num)]),
-    countries: c.map(r => [esc(r[0]), num(r[1])]),
-    levels: l.map(r => [esc(r[0]), num(r[1]), num(r[2])]),
-    funds: f.map(r => [esc(r[0]), ...r.slice(1, 10).map(num)])
+    schools: s.map(r => [esc(r[0]), ...r.slice(1, 8).map(num)]),
+    countries: c.map(r => [esc(r[0]), num(r[1]), num(r[2]), num(r[3])]),
+    levels: l.map(r => [esc(r[0]), num(r[1]), num(r[2]), num(r[3]), num(r[4])]),
+    funds: f.map(r => [esc(r[0]), ...r.slice(1, 10).map(num)]),
+    projStatus: !pp ? "missing" : ((pp.labels[0] || "") === "โครงการที่" ? "ok" : "header"),
+    projLabel: pp ? esc(pp.labels[0] || "") : "",
+    natStatus: !nn ? "missing" : ((nn.labels[0] || "") === "โครงการที่" ? "ok" : "header"),
+    natLabel: nn ? esc(nn.labels[0] || "") : "",
+    recNat: (nn && (nn.labels[0] || "") === "โครงการที่") ? nn.map(r => [num(r[0]), esc(r[1]), esc(r[2]), num(r[3]), num(r[4])]).filter(x => x[0] > 0 && x[1]) : [],
+    recStatus: !rr ? "missing" : ((rr.labels[0] || "") === "โครงการที่" ? "ok" : "header"),
+    recLabel: rr ? esc(rr.labels[0] || "") : "",
+    recSchool: (rr && (rr.labels[0] || "") === "โครงการที่") ? rr.map(r => [num(r[0]), esc(r[1]), num(r[2]), num(r[3]), num(r[4]), num(r[5]), num(r[6])]).filter(x => x[0] > 0 && x[1]) : [],
+    projSchool: (pp && (pp.labels[0] || "") === "โครงการที่") ? pp.map(r => [num(r[0]), esc(r[1]), num(r[2]), num(r[3])]).filter(x => x[0] > 0 && x[1]) : []
   };
 }
 
 /* ===== ตัวช่วยวาดกราฟ ===== */
 const txt = c => { if (!/^#[0-9a-f]{6}$/i.test(c)) return "#33301f"; const n = parseInt(c.slice(1), 16); return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) > 150 ? "#2a2a1a" : "#fff"; };
-function hbar(id, rows, names, colors, unit = "คน") {
+function hbar(id, rows, names, colors, unit = "คน", sumLegend = true) {
   const m = Math.max(1, ...rows.map(r => r[1].reduce((a, b) => a + b, 0)));
-  const step = m <= 40 ? 5 : m <= 80 ? 10 : 20, max = Math.ceil(m / step) * step, n = max / step;
+  const step = m <= 12 ? 2 : m <= 40 ? 5 : m <= 80 ? 10 : m <= 200 ? 20 : m <= 500 ? 50 : 100, max = Math.ceil(m / step) * step, n = max / step;
   const col = i => rows.reduce((s, r) => s + r[1][i], 0);
-  const legend = names.map((t, i) => `<span><i class="dot" style="background:${colors[i]}"></i>${t} (${col(i)} ${unit})</span>`).join("");
-  const body = rows.map(([l, v]) => `<div class="hrow"><div class="hl">${l}</div><div class="ht" style="--w:${100 / n}%">${v.map((x, i) => x ? `<div style="width:${x / max * 100}%;background:${colors[i]};color:${txt(colors[i])}">${x}</div>` : "").join("")}<b>(${v.reduce((a, b) => a + b, 0)})</b></div></div>`).join("");
+  const legend = names.map((t, i) => `<span><i class="dot" style="background:${colors[i]}"></i>${t}${sumLegend ? ` (${+col(i).toFixed(2)} ${unit})` : ""}</span>`).join("");
+  const body = rows.map(([l, v]) => `<div class="hrow"><div class="hl">${l}</div><div class="ht" style="--w:${100 / n}%">${v.map((x, i) => x ? `<div style="width:${x / max * 100}%;background:${colors[i]};color:${txt(colors[i])}">${x}</div>` : "").join("")}<b>(${+v.reduce((a, b) => a + b, 0).toFixed(2)})</b></div></div>`).join("");
   let ticks = ""; for (let t = 0; t <= max; t += step) ticks += `<span>${t}</span>`;
   $(id).innerHTML = `<div class="legend">${legend}</div>${body}<div class="axis"><span></span><div>${ticks}</div></div>`;
 }
@@ -312,27 +380,50 @@ function donut(dId, items, total, tId, unit = "คน") {
 
 /* ===== แสดงผลทั้งหน้า ===== */
 function render(D) {
-  const sc = D.schools, ok = sum(sc, 1), grad = sum(sc, 2), drop = sum(sc, 3), total = ok + grad;
+  const sc = [...D.schools].sort((x, y) => (y[1] + y[2]) - (x[1] + x[2])), ok = sum(sc, 1), grad = sum(sc, 2), drop = sum(sc, 3), total = ok + grad;
   $("total").textContent = fmt(total); $("asof").textContent = "ข้อมูล ณ วันที่ " + D.asOf; $("kOk").textContent = ok; $("kGrad").textContent = grad; $("kFor").textContent = sum(sc, 5); $("kThai").textContent = sum(sc, 4);
 
   // แท็บสถานะการศึกษา
   hbar("stBar", sc.map(r => [r[0], [r[1], r[2]]]), ["ปกติ", "สำเร็จการศึกษา"], [SAGE, PALE]);
   const lvCol = [SAGE, C5, SAND, PALE], lv = D.levels.map((r, i) => [r[0], r[1] + r[2], lvCol[i % 4]]);
-  donut("lvD", lv, sum(lv.map(x => [0, x[1]]), 1), "lvT");
+  const lt = sum(lv.map(x => [0, x[1]]), 1);
+  donut("lvD", lv, lt);
+  // ข้อมูลระดับ x สถานะ: ใช้คอลัมน์ D/E ของแท็บ "ระดับ" ถ้ามี ไม่มีก็รวมจากแท็บ "โครงการทุน"
+  const mat0 = D.levels.map(([n, , , a = 0, b = 0]) => ({n, ok: a, gr: b}));
+  const mat = mat0.some(x => x.ok + x.gr > 0) ? mat0 : [{n: "ป.เอก", ok: sum(D.funds, 3), gr: sum(D.funds, 4)}, {n: "ป.โท", ok: sum(D.funds, 1), gr: sum(D.funds, 2)}];
+  $("lvT").innerHTML = lv.map(([n, v, c], i) => { const m = mat.find(x => x.n === n) || mat[i];
+    return `<tr><td><i class="dot" style="background:${c}"></i>${n}</td><td>${m ? m.ok : "-"}</td><td>${m ? m.gr : "-"}</td><td>${v}</td><td>${lt ? (v / lt * 100).toFixed(2) : "0.00"}%</td></tr>`; }).join("")
+    + `<tr><td><b>รวม</b></td><td><b>${mat.reduce((s, x) => s + x.ok, 0)}</b></td><td><b>${mat.reduce((s, x) => s + x.gr, 0)}</b></td><td><b>${lt}</b></td><td><b>${lt ? "100%" : "-"}</b></td></tr>`;
   
   $("stTb").innerHTML = sc.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="warn">${r[3]}</td><td><b>${r[1] + r[2] + r[3]}</b></td></tr>`).join("");
   $("stTf").innerHTML = `<tr><td>รวมทั้งสิ้น</td><td>${ok}</td><td>${grad}</td><td class="warn">${drop}</td><td>${ok + grad + drop}</td></tr>`;
-  donut("stD", [["ปกติ", ok, SAGE], ["สำเร็จการศึกษา", grad, BLUE]], total, "stT");
+  const zero = {ok: 0, gr: 0}, ea = mat.find(x => x.n === "ป.เอก") || mat[0] || zero, mo = mat.find(x => x.n === "ป.โท") || mat[1] || zero;
+  const okL = ea.ok + mo.ok, grL = ea.gr + mo.gr, stTot = okL + grL;
+  donut("stD", [["ปกติ · ป.เอก", ea.ok, SAGE], ["ปกติ · ป.โท", mo.ok, C5], ["สำเร็จการศึกษา · ป.เอก", ea.gr, SAND], ["สำเร็จการศึกษา · ป.โท", mo.gr, BLUE]], stTot);
+  const pc2 = v => stTot ? (v / stTot * 100).toFixed(2) + "%" : "0.00%";
+  const gRow = (t, v) => `<tr class="grp"><td>${t}</td><td>${v}</td><td>${pc2(v)}</td></tr>`;
+  const sRow = (t, v, c) => `<tr class="sub"><td><i class="dot" style="background:${c}"></i>${t}</td><td>${v}</td><td>${pc2(v)}</td></tr>`;
+  $("stT").innerHTML = gRow("ปกติ", okL) + sRow("ป.เอก", ea.ok, SAGE) + sRow("ป.โท", mo.ok, C5) + gRow("สำเร็จการศึกษา", grL) + sRow("ป.เอก", ea.gr, SAND) + sRow("ป.โท", mo.gr, BLUE)
+    + `<tr><td><b>รวม</b></td><td><b>${stTot}</b></td><td><b>${stTot ? "100%" : "-"}</b></td></tr>`;
+  $("stW").textContent = (okL !== ok || grL !== grad) ? `⚠ ยอดแยกระดับ (ปกติ ${okL} / สำเร็จการศึกษา ${grL}) ไม่ตรงกับตารางสำนักวิชา (ปกติ ${ok} / สำเร็จการศึกษา ${grad}) กรุณาตรวจสอบข้อมูลใน Google ชีต` : "";
   $("stN").textContent = `พ้นสภาพ/ลาออก/ยุติการรับทุน ${drop} คน (ร้อยละ ${(drop / (total + drop || 1) * 100).toFixed(1)}) ไม่นับรวมในยอด ${total} คน`;
 
   // แท็บสัญชาติ
   const thai = sum(sc, 4), foreign = sum(sc, 5);
   hbar("natBar", sc.filter(r => r[4] + r[5] > 0).map(r => [r[0], [r[4], r[5]]]), ["ไทย", "ต่างชาติ"], [SAGE, SAND]);
   hbar("lvNat", D.levels.map(r => [`${r[0]} (${r[1] + r[2]} คน)`, [r[1], r[2]]]), ["ไทย", "ต่างชาติ"], [SAGE, SAND]);
+  { const tl = D.levels.reduce((s, r) => [s[0] + r[1], s[1] + r[2]], [0, 0]);
+    $("lvNatT").innerHTML = D.levels.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[1] + r[2]}</td></tr>`).join("")
+      + `<tr><td><b>รวม</b></td><td><b>${tl[0]}</b></td><td><b>${tl[1]}</b></td><td><b>${tl[0] + tl[1]}</b></td></tr>`; }
   donut("natD", [["ไทย", thai, SAGE], ["ต่างชาติ", foreign, SAND]], thai + foreign, "natT");
-  const cc = [SAGE, SAND, BLUE, C5, C6, SAGE, SAND, BLUE, C5];
-  const cmax = Math.max(10, Math.ceil(Math.max(...D.countries.map(c => c[1])) / 10) * 10);
-  $("ctry").innerHTML = `<div class="vbars">${D.countries.map(([, v], i) => `<div class="vb">${v}<i style="height:${v / cmax * 100}%;background:${cc[i % cc.length]}"></i></div>`).join("")}</div><div class="vl">${D.countries.map(([n]) => `<span>${n}</span>`).join("")}</div><p class="note">แกนตั้ง: 0–${cmax} คน</p>`;
+  const cs = D.countries.map(([n, t, d = 0, m = 0]) => { const k = d + m; return {n, d, m, u: k ? 0 : t, t: k || t}; });
+  const cmax = Math.max(10, Math.ceil((Math.max(...cs.map(c => c.t)) + 1) / 10) * 10), UN = "#cfcab5";
+  const sd = cs.reduce((s, c) => s + c.d, 0), sm = cs.reduce((s, c) => s + c.m, 0), su = cs.reduce((s, c) => s + c.u, 0);
+  const split = sd + sm > 0, pal = [SAGE, SAND, BLUE, C5, C6];
+  const seg = (v, c) => v ? `<i style="flex:${v};background:${c};color:${txt(c)}">${v / cmax * 300 >= 16 ? v : ""}</i>` : "";
+  const legend = split ? `<div class="legend"><span><i class="dot" style="background:${SAGE}"></i>ป.เอก (${sd} คน)</span><span><i class="dot" style="background:${C5}"></i>ป.โท (${sm} คน)</span>${su ? `<span><i class="dot" style="background:${UN}"></i>ไม่ระบุระดับ (${su} คน)</span>` : ""}</div>` : "";
+  $("ctry").innerHTML = legend + `<div class="vbars">${cs.map((c, i) => `<div class="vb" title="${c.n}: ${split ? `ป.เอก ${c.d} · ป.โท ${c.m} · ` : ""}รวม ${c.t}"><span>${c.t}</span><div class="stk" style="height:${c.t / cmax * 100}%">${seg(c.u, split ? UN : pal[i % pal.length])}${seg(c.m, C5)}${seg(c.d, SAGE)}</div></div>`).join("")}</div>
+    <div class="vl">${cs.map(c => `<span>${c.n}${c.u ? "" : `<small>เอก ${c.d} · โท ${c.m}</small>`}</span>`).join("")}</div><p class="note">แกนตั้ง: 0–${cmax} คน${split ? " · ตัวเลขบนแท่งคือยอดรวมของประเทศนั้น" : ""}</p>`;
 
   // แท็บประเภททุน
   const f = D.funds, ppl = r => r[1] + r[2] + r[3] + r[4], avg = (b, n) => n ? fmt(b / n, 2) : "-";
@@ -341,6 +432,88 @@ function render(D) {
     return `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td>${ppl(r)}</td><td>${fmt(r[5])}</td><td>${avg(r[5], ppl(r))}</td></tr>`; }).join("");
   $("t1f").innerHTML = `<tr><td>รวมทั้งสิ้น</td>${T.c.map(x => `<td>${x}</td>`).join("")}<td>${T.p}</td><td>${fmt(T.b)}</td><td>${avg(T.b, T.p)}</td></tr>`;
   $("kProj").textContent = f.length + " โครงการ"; $("kPeople").textContent = T.p + " คน"; $("kBud").textContent = fmt(T.b) + " บาท";
+
+  // กราฟสรุปตารางทุนการศึกษาตามปีการศึกษา
+  hbar("fdPpl", f.map(r => [r[0], [r[1], r[2], r[3], r[4]]]), ["ป.โท ปกติ", "ป.โท สำเร็จการศึกษา", "ป.เอก ปกติ", "ป.เอก สำเร็จการศึกษา"], [C5, BLUE, SAGE, SAND], "คน");
+  const fpal = [SAGE, SAND, C5, BLUE, C6, "#b8b29a", "#7d6b4f", "#d9c27a"], fb = f.map((r, i) => ({n: r[0], v: r[5], c: fpal[i % fpal.length]}));
+  donut("fdD", fb.map(x => [x.n, x.v, x.c]), T.b);
+  $("fdD").firstElementChild.innerHTML = `${(T.b / 1e6).toFixed(2)}<small>ล้านบาท</small>`;
+  $("fdT").innerHTML = fb.map(x => `<tr><td><i class="dot" style="background:${x.c}"></i>${x.n}</td><td>${fmt(x.v)}</td><td><b>${T.b ? (x.v / T.b * 100).toFixed(2) : "0.00"}%</b></td></tr>`).join("")
+    + `<tr class="grp"><td>รวมทั้งสิ้น</td><td>${fmt(T.b)}</td><td>${T.b ? "100%" : "-"}</td></tr>`;
+
+  // ผู้รับทุนรายโครงการ แยกตามสำนักวิชาและระดับ (แท็บ "ผู้รับทุนรายโครงการ")
+  const rcs = D.recSchool || [];
+  const rcd = f.map((r, i) => {
+    const m = {}; rcs.filter(x => x[0] === i + 1).forEach(x => { const o = m[x[1]] || (m[x[1]] = {n: x[1], m: 0, d: 0}); o.m += x[2]; o.d += x[3]; });
+    return Object.values(m).filter(x => x.m + x.d > 0).sort((a, b) => (b.m + b.d) - (a.m + a.d) || b.d - a.d);
+  });
+  const anyRc = rcd.some(a => a.length), rst = D.recStatus, rlab = D.recLabel || "";
+  $("recProjN").textContent = anyRc ? "" : (!rst ? "ยังไม่ได้เชื่อม Google ชีต จึงยังไม่มีข้อมูลผู้รับทุนแยกตามสำนักวิชา"
+    : rst === "ok" ? `พบแท็บ "ผู้รับทุนรายโครงการ" แล้ว แต่ยังไม่มีตัวเลข (เป็น 0 หรือว่างทั้งหมด) กรุณากรอกจำนวนในคอลัมน์ C (ป.โท) และ D (ป.เอก)`
+    : (rst === "header" && rlab !== "สำนักวิชา") ? `พบแท็บ "ผู้รับทุนรายโครงการ" แต่ช่อง A1 เป็น "${rlab}" ต้องเป็น "โครงการที่"`
+    : `ไม่พบแท็บ "ผู้รับทุนรายโครงการ" ใน Google ชีต (ตรวจชื่อแท็บให้ตรงตัว) กราฟด้านล่างจึงยังไม่มีข้อมูลแยกสำนักวิชา`);
+  $("recProj").innerHTML = f.map((r, i) => {
+    const em = r[1] + r[2], ed = r[3] + r[4];
+    const am = rcd[i].reduce((s, x) => s + x.m, 0), ad = rcd[i].reduce((s, x) => s + x.d, 0);
+    const warn = rcd[i].length && (am !== em || ad !== ed) ? `<p class="note" style="color:var(--rust);font-weight:600">⚠ ยอดแยกสำนักวิชา (ป.โท ${am} / ป.เอก ${ad}) ไม่ตรงกับยอดของโครงการ (ป.โท ${em} / ป.เอก ${ed})</p>` : "";
+    return `<div class="card"><h2>${r[0]}</h2><div class="pm"><span>ผู้รับทุนทั้งหมด <b>${em + ed}</b> คน</span><span>ป.โท <b>${em}</b> คน</span><span>ป.เอก <b>${ed}</b> คน</span>${rcd[i].length ? `<span>จาก <b>${rcd[i].length}</b> สำนักวิชา</span>` : ""}</div>${rcd[i].length ? `<div id="rcB${i}"></div>` : `<p class="note">ยังไม่มีข้อมูลผู้รับทุนแยกตามสำนักวิชาของโครงการนี้</p>`}${warn}</div>`;
+  }).join("");
+  rcd.forEach((a, i) => { if (a.length) hbar("rcB" + i, a.map(x => [x.n, [x.m, x.d]]), ["ป.โท", "ป.เอก"], [C5, SAGE], "คน"); });
+
+  // สถานะการศึกษาของผู้รับทุนรายโครงการ แยกตามสำนักวิชา (คอลัมน์ E-G ของแท็บ "ผู้รับทุนรายโครงการ")
+  const std = f.map((r, i) => {
+    const m = {}; rcs.filter(x => x[0] === i + 1).forEach(x => { const o = m[x[1]] || (m[x[1]] = {n: x[1], a: 0, g: 0, d: 0}); o.a += x[4] || 0; o.g += x[5] || 0; o.d += x[6] || 0; });
+    return Object.values(m).filter(x => x.a + x.g + x.d > 0).sort((p, q) => (q.a + q.g) - (p.a + p.g) || q.g - p.g);
+  });
+  const anySt = std.some(a => a.length), hasDr = std.some(a => a.some(x => x.d > 0));
+  $("stProjN").textContent = anySt ? "" : (!rst ? "ยังไม่ได้เชื่อม Google ชีต จึงยังไม่มีข้อมูลสถานะแยกตามสำนักวิชา"
+    : rst === "ok" ? `พบแท็บ "ผู้รับทุนรายโครงการ" แล้ว แต่ยังไม่มีตัวเลขสถานะ กรุณากรอกในคอลัมน์ E (ปกติ), F (สำเร็จการศึกษา), G (พ้นสภาพ/ลาออก/ยุติการรับทุน)`
+    : (rst === "header" && rlab !== "สำนักวิชา") ? `พบแท็บ "ผู้รับทุนรายโครงการ" แต่ช่อง A1 เป็น "${rlab}" ต้องเป็น "โครงการที่"`
+    : `ไม่พบแท็บ "ผู้รับทุนรายโครงการ" ใน Google ชีต (ตรวจชื่อแท็บให้ตรงตัว) กราฟด้านล่างจึงยังไม่มีข้อมูลแยกสำนักวิชา`);
+  $("stProj").innerHTML = f.map((r, i) => {
+    const pa = r[1] + r[3], pg = r[2] + r[4];
+    const aa = std[i].reduce((s, x) => s + x.a, 0), ag = std[i].reduce((s, x) => s + x.g, 0), ad = std[i].reduce((s, x) => s + x.d, 0);
+    const warn = std[i].length && (aa !== pa || ag !== pg) ? `<p class="note" style="color:var(--rust);font-weight:600">⚠ ยอดแยกสำนักวิชา (ปกติ ${aa} / สำเร็จการศึกษา ${ag}) ไม่ตรงกับยอดของโครงการ (ปกติ ${pa} / สำเร็จการศึกษา ${pg})</p>` : "";
+    return `<div class="card"><h2>${r[0]}</h2><div class="pm"><span>ปกติ <b>${pa}</b> คน</span><span>สำเร็จการศึกษา <b>${pg}</b> คน</span>${ad ? `<span>พ้นสภาพ/ลาออก/ยุติการรับทุน <b>${ad}</b> คน</span>` : ""}</div>${std[i].length ? `<div id="sB${i}"></div>` : `<p class="note">ยังไม่มีข้อมูลสถานะแยกตามสำนักวิชาของโครงการนี้</p>`}${warn}</div>`;
+  }).join("");
+  std.forEach((a, i) => { if (a.length) hbar("sB" + i, a.map(x => [x.n, hasDr ? [x.a, x.g, x.d] : [x.a, x.g]]), hasDr ? ["ปกติ", "สำเร็จการศึกษา", "พ้นสภาพ/ลาออก/ยุติการรับทุน"] : ["ปกติ", "สำเร็จการศึกษา"], hasDr ? [SAGE, PALE, "#b8b29a"] : [SAGE, PALE], "คน"); });
+
+  // ผู้รับทุนรายโครงการ แยกตามประเทศ สำนักวิชา และระดับ (แท็บ "ผู้รับทุนตามประเทศ")
+  const nts = D.recNat || [], isTh = c => /^(ไทย|thailand|thai)$/i.test(String(c).trim());
+  const byT = (a, b) => (b.m + b.d) - (a.m + a.d) || b.d - a.d;
+  // สีประจำแต่ละประเทศ (ใช้สีเดียวกันทุกโครงการ เรียงตามจำนวนรวม คนไทยมาก่อน)
+  const natAll = {}; nts.forEach(x => { if (x[3] + x[4] > 0) natAll[x[1]] = (natAll[x[1]] || 0) + x[3] + x[4]; });
+  const NP = [SAGE, SAND, C5, BLUE, C6, "#b8b29a", "#7d6b4f", "#d9c27a", "#6d8fa8", "#9a7aa0", "#c28b5a", "#5b8a72"], ncol = {};
+  Object.keys(natAll).sort((a, b) => (isTh(b) - isTh(a)) || natAll[b] - natAll[a]).forEach((c, i) => { ncol[c] = NP[i % NP.length]; });
+  const ntd = f.map((r, i) => {
+    const sm = {};
+    nts.filter(x => x[0] === i + 1 && x[3] + x[4] > 0).forEach(x => {
+      const s = sm[x[2]] || (sm[x[2]] = {n: x[2], m: 0, d: 0, cm: {}});
+      s.m += x[3]; s.d += x[4];
+      const c = s.cm[x[1]] || (s.cm[x[1]] = {n: x[1], m: 0, d: 0}); c.m += x[3]; c.d += x[4];
+    });
+    return Object.values(sm).map(s => ({...s, cs: Object.values(s.cm).sort(byT)})).sort(byT);
+  });
+  const nst = D.natStatus, nlab = D.natLabel || "";
+  $("ntProjN").textContent = ntd.some(a => a.length) ? "" : (!nst ? "ยังไม่ได้เชื่อม Google ชีต จึงยังไม่มีข้อมูลผู้รับทุนแยกตามประเทศ"
+    : nst === "ok" ? `พบแท็บ "ผู้รับทุนตามประเทศ" แล้ว แต่ยังไม่มีตัวเลข กรุณากรอกจำนวนในคอลัมน์ D (ป.โท) และ E (ป.เอก)`
+    : (nst === "header" && nlab !== "สำนักวิชา") ? `พบแท็บ "ผู้รับทุนตามประเทศ" แต่ช่อง A1 เป็น "${nlab}" ต้องเป็น "โครงการที่"`
+    : `ไม่พบแท็บ "ผู้รับทุนตามประเทศ" ใน Google ชีต (ตรวจชื่อแท็บให้ตรงตัว) กราฟด้านล่างจึงยังไม่มีข้อมูลแยกตามประเทศ`);
+  const ntCh = [];
+  $("ntProj").innerHTML = f.map((r, i) => {
+    const em = r[1] + r[2], ed = r[3] + r[4], sc2 = ntd[i];
+    const am = sc2.reduce((s, x) => s + x.m, 0), ad = sc2.reduce((s, x) => s + x.d, 0);
+    const ct = {}; sc2.forEach(s => s.cs.forEach(c => { ct[c.n] = (ct[c.n] || 0) + c.m + c.d; }));
+    const pc = Object.keys(ct).sort((a, b) => ct[b] - ct[a]);
+    const th = pc.filter(isTh).reduce((s, c) => s + ct[c], 0), fo = am + ad - th;
+    const warn = sc2.length && (am !== em || ad !== ed) ? `<p class="note" style="color:var(--rust);font-weight:600">⚠ ยอดแยกตามสำนักวิชา (ป.โท ${am} / ป.เอก ${ad}) ไม่ตรงกับยอดของโครงการ (ป.โท ${em} / ป.เอก ${ed})</p>` : "";
+    const chips = `<div class="pm"><span>ผู้รับทุนทั้งหมด <b>${em + ed}</b> คน</span><span>ป.โท <b>${em}</b> คน</span><span>ป.เอก <b>${ed}</b> คน</span>${sc2.length ? `<span>ไทย <b>${th}</b> คน · ต่างชาติ <b>${fo}</b> คน</span><span>จาก <b>${sc2.length}</b> สำนักวิชา <b>${pc.length}</b> ประเทศ</span>` : ""}</div>`;
+    const rows = sc2.map(s => `<tr class="grp"><td>${s.n}</td><td>${s.m}</td><td>${s.d}</td><td>${s.m + s.d}</td></tr>` + s.cs.map(c => `<tr class="sub"><td><i class="dot" style="background:${ncol[c.n]}"></i>${c.n}</td><td>${c.m}</td><td>${c.d}</td><td>${c.m + c.d}</td></tr>`).join("")).join("")
+      + `<tr><td><b>รวมทั้งสิ้น</b></td><td><b>${am}</b></td><td><b>${ad}</b></td><td><b>${am + ad}</b></td></tr>`;
+    if (sc2.length) ntCh.push([i, sc2, pc]);
+    return `<div class="card"><h2>${r[0]}</h2>${chips}${sc2.length ? `<div id="nB${i}"></div><details open style="margin-top:12px"><summary style="cursor:pointer;font-weight:600;color:var(--main)">รายละเอียดแยกตามสำนักวิชา ระดับ และประเทศ</summary><div class="mini scroll"><table style="margin-top:8px"><thead><tr><th>สำนักวิชา / ประเทศ</th><th>ป.โท</th><th>ป.เอก</th><th>รวม</th></tr></thead><tbody>${rows}</tbody></table></div></details>` : `<p class="note">ยังไม่มีข้อมูลผู้รับทุนแยกตามประเทศของโครงการนี้</p>`}${warn}</div>`;
+  }).join("");
+  ntCh.forEach(([i, sc2, pc]) => hbar("nB" + i, sc2.map(s => [s.n, pc.map(c => s.cm[c] ? s.cm[c].m + s.cm[c].d : 0)]), pc, pc.map(c => ncol[c]), "คน"));
 
   // แท็บผลงานตีพิมพ์
   const pct = (n, t) => `${n} (${t ? (n / t * 100).toFixed(2) : "0.00"}%)`;
@@ -368,6 +541,44 @@ function render(D) {
     const pin = g && v > 0 ? `<span class="pin" style="left:clamp(11px,${p / mp * 100}%,calc(100% - 11px));border-color:${col};background:${hit ? col : "#fff"}">${hit ? "✓" : ""}</span>` : "";
     return `<div class="prog"><span>${r[0]}</span><div class="tr"><div class="fl" style="width:${p / mp * 100}%;background:${col}"></div>${mark}${pin}</div><div class="pt"><b>${v} / ${g} เรื่อง${g ? ` (${p.toFixed(0)}%)` : ""}</b>${tx}</div></div>`;
   }).join("") + `<p class="note">🏁 คือเส้นเป้าหมาย (100%) · วงกลมคือตำแหน่งปัจจุบัน · ✓ คือบรรลุเป้าหมายแล้ว</p>`;
+
+  const pps = D.projSchool || [];
+  // ผลงานรายโครงการ แยกตามสำนักวิชาและ Q (แท็บ "ผลงานรายโครงการ")
+  const pjd = f.map((r, i) => {
+    const m = {}; pps.filter(x => x[0] === i + 1).forEach(x => { const o = m[x[1]] || (m[x[1]] = {n: x[1], q1: 0, q2: 0}); o.q1 += x[2]; o.q2 += x[3]; });
+    return Object.values(m).filter(x => x.q1 + x.q2 > 0).sort((a, b) => (b.q1 + b.q2) - (a.q1 + a.q2) || b.q1 - a.q1);
+  });
+  const anyPj = pjd.some(a => a.length);
+  const stt = D.projStatus, lab = D.projLabel || "";
+  $("pubProjN").textContent = anyPj ? "" : (!stt ? "ยังไม่ได้เชื่อม Google ชีต จึงยังไม่มีข้อมูลผลงานแยกตามสำนักวิชา"
+    : stt === "ok" ? `พบแท็บ "ผลงานรายโครงการ" แล้ว แต่ยังไม่มีตัวเลข Q1/Q2 (เป็น 0 หรือว่างทั้งหมด) กรุณากรอกตัวเลขในคอลัมน์ C และ D`
+    : (stt === "header" && lab !== "สำนักวิชา") ? `พบแท็บ "ผลงานรายโครงการ" แต่ช่อง A1 เป็น "${lab}" ต้องเป็น "โครงการที่"`
+    : `ไม่พบแท็บ "ผลงานรายโครงการ" ใน Google ชีต (ตรวจชื่อแท็บให้ตรงตัว) กราฟด้านล่างจึงยังไม่มีข้อมูลแยกสำนักวิชา`);
+  {
+    $("pubProj").innerHTML = f.map((r, i) => {
+      const g = r[7], q1 = r[8], q2 = r[9], hit = g > 0 && q1 >= g, p = g ? q1 / g * 100 : 0, mx = Math.max(100, p);
+      const a1 = pjd[i].reduce((s, x) => s + x.q1, 0), a2 = pjd[i].reduce((s, x) => s + x.q2, 0);
+      const st = g ? (hit ? `<em class="bd ok">✓ บรรลุเป้า Q1${q1 > g ? ` (เกิน ${q1 - g} เรื่อง)` : ""}</em>` : `<em class="bd">อีก ${g - q1} เรื่องถึงเป้า Q1</em>`) : "";
+      const bar = g ? `<div class="prog" style="grid-template-columns:1fr;margin:28px 0 10px"><div class="tr"><div class="fl" style="width:${p / mx * 100}%;background:${hit ? SAND : SAGE}"></div><i class="tg" style="left:${100 / mx * 100}%"></i><span class="tgl" style="left:${100 / mx * 100}%">🏁 เป้าหมาย Q1 ${g} เรื่อง</span>${q1 > 0 ? `<span class="pin" style="left:clamp(11px,${p / mx * 100}%,calc(100% - 11px));border-color:${hit ? SAND : SAGE};background:${hit ? SAND : "#fff"}">${hit ? "✓" : ""}</span>` : ""}</div></div>` : "";
+      const warn = pjd[i].length && (a1 !== q1 || a2 !== q2) ? `<p class="note" style="color:var(--rust);font-weight:600">⚠ ยอดแยกสำนักวิชา (Q1 ${a1} / Q2 ${a2}) ไม่ตรงกับยอดของโครงการ (Q1 ${q1} / Q2 ${q2})</p>` : "";
+      return `<div class="card"><h2>${r[0]}</h2><div class="pm"><span>ต้องตีพิมพ์ <b>${r[6]}</b> เรื่อง</span><span>เป้าหมาย Q1 <b>${g}</b> เรื่อง</span><span>ทำได้ Q1 <b>${q1}</b> · Q2 <b>${q2}</b> (รวม <b>${q1 + q2}</b>)</span>${st}</div>${bar}${pjd[i].length ? `<div id="pjB${i}"></div>` : `<p class="note">ยังไม่มีข้อมูลผลงานแยกตามสำนักวิชาของโครงการนี้</p>`}${warn}</div>`;
+    }).join("");
+    pjd.forEach((a, i) => { if (a.length) hbar("pjB" + i, a.map(x => [x.n, [x.q1, x.q2]]), ["Q1", "Q2"], [SAGE, SAND], "เรื่อง"); });
+  }
+
+  // ผลงานตีพิมพ์แยกตามสำนักวิชา (คอลัมน์ G/H ของแท็บ "สำนักวิชา")
+  const bySch = {};
+  pps.forEach(x => { const o = bySch[x[1]] || (bySch[x[1]] = {n: x[1], q1: 0, q2: 0}); o.q1 += x[2]; o.q2 += x[3]; });
+  const srcRows = pps.length ? Object.values(bySch) : sc.map(r => ({n: r[0], q1: r[6] || 0, q2: r[7] || 0}));
+  const ps = srcRows.filter(x => x.q1 + x.q2 > 0).sort((x, y) => (y.q1 + y.q2) - (x.q1 + x.q2) || y.q1 - x.q1);
+  const sq1 = ps.reduce((s, x) => s + x.q1, 0), sq2 = ps.reduce((s, x) => s + x.q2, 0), spt = sq1 + sq2;
+  $("pubSchWrap").style.display = spt ? "" : "none";
+  if (spt) {
+    hbar("pubSchBar", ps.map(x => [x.n, [x.q1, x.q2]]), ["Q1", "Q2"], [SAGE, SAND], "เรื่อง");
+    $("pubSchT").innerHTML = ps.map(x => `<tr><td>${x.n}</td><td>${x.q1}</td><td>${x.q2}</td><td><b>${x.q1 + x.q2}</b></td><td>${((x.q1 + x.q2) / spt * 100).toFixed(1)}%</td></tr>`).join("")
+      + `<tr class="grp"><td>รวม</td><td>${sq1}</td><td>${sq2}</td><td>${spt}</td><td>100%</td></tr>`;
+    $("pubSchW").textContent = (sq1 !== T.q1 || sq2 !== T.q2) ? `⚠ ยอดตามสำนักวิชา (Q1 ${sq1} / Q2 ${sq2}) ไม่ตรงกับยอดตามโครงการ (Q1 ${T.q1} / Q2 ${T.q2}) กรุณาตรวจสอบข้อมูลใน Google ชีต` : "";
+  }
 }
 
 /* ===== อัปเดตอัตโนมัติ ===== */
