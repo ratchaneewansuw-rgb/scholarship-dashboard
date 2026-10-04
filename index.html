@@ -184,13 +184,14 @@ h2.sec{margin:22px 4px 12px}
         <tbody id="stTb"></tbody><tfoot id="stTf"></tfoot>
       </table>
     </div>
-    <div class="card"><h2>จำนวนนักศึกษาทุนแยกตามสำนักวิชา <span class="tag">ไม่รวมนักศึกษาพ้นสภาพ/ลาออก/ยุติการรับทุน</span></h2><div id="stBar"></div></div>
+    <div class="card"><h2>จำนวนนักศึกษาทุนแยกตามสำนักวิชา <span class="tag">รวมนักศึกษาพ้นสภาพ/ลาออก/ยุติการรับทุน</span></h2><div id="stBar"></div></div>
     
     
     <div class="two eq">
       <div class="card mini"><h2>สัดส่วนระดับการศึกษา</h2>
         <div class="donut" id="lvD"><span>-<small>คน</small></span></div>
         <table><thead><tr><th>ระดับ</th><th>ปกติ</th><th>สำเร็จการศึกษา</th><th>รวม (คน)</th><th>ร้อยละ</th></tr></thead><tbody id="lvT"></tbody></table>
+        <p class="note" id="lvN"></p>
       </div>
       <div class="card mini"><h2>สถานะการศึกษา (Educational Status)</h2>
         <div class="donut" id="stD"><span>-<small>คน</small></span></div>
@@ -384,7 +385,7 @@ function render(D) {
   $("total").textContent = fmt(total); $("asof").textContent = "ข้อมูล ณ วันที่ " + D.asOf; $("kOk").textContent = ok; $("kGrad").textContent = grad; $("kFor").textContent = sum(sc, 5); $("kThai").textContent = sum(sc, 4);
 
   // แท็บสถานะการศึกษา
-  hbar("stBar", sc.map(r => [r[0], [r[1], r[2]]]), ["ปกติ", "สำเร็จการศึกษา"], [SAGE, PALE]);
+  hbar("stBar", sc.map(r => [r[0], [r[1], r[2], r[3]]]), ["ปกติ", "สำเร็จการศึกษา", "พ้นสภาพ/ลาออก/ยุติการรับทุน"], [SAGE, PALE, "#b8b29a"]);
   const lvCol = [SAGE, C5, SAND, PALE], lv = D.levels.map((r, i) => [r[0], r[1] + r[2], lvCol[i % 4]]);
   const lt = sum(lv.map(x => [0, x[1]]), 1);
   donut("lvD", lv, lt);
@@ -407,6 +408,7 @@ function render(D) {
     + `<tr><td><b>รวม</b></td><td><b>${stTot}</b></td><td><b>${stTot ? "100%" : "-"}</b></td></tr>`;
   $("stW").textContent = (okL !== ok || grL !== grad) ? `⚠ ยอดแยกระดับ (ปกติ ${okL} / สำเร็จการศึกษา ${grL}) ไม่ตรงกับตารางสำนักวิชา (ปกติ ${ok} / สำเร็จการศึกษา ${grad}) กรุณาตรวจสอบข้อมูลใน Google ชีต` : "";
   $("stN").textContent = `พ้นสภาพ/ลาออก/ยุติการรับทุน ${drop} คน (ร้อยละ ${(drop / (total + drop || 1) * 100).toFixed(1)}) ไม่นับรวมในยอด ${total} คน`;
+  $("lvN").textContent = `พ้นสภาพ/ลาออก/ยุติการรับทุน ${drop} คน (ร้อยละ ${(drop / (lt + drop || 1) * 100).toFixed(1)}) ไม่นับรวมในยอด ${lt} คน`;
 
   // แท็บสัญชาติ
   const thai = sum(sc, 4), foreign = sum(sc, 5);
