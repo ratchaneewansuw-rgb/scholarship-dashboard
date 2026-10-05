@@ -104,7 +104,7 @@ tfoot td{background:var(--tint)}
 .prog .pt{display:flex;flex-direction:column;gap:3px}
 .prog .pt b{font-weight:600}
 .bd{font-style:normal;font-size:.75rem;color:var(--muted)}
-.bd.ok{align-self:flex-start;background:var(--tint);color:var(--ink);padding:1px 10px;border-radius:999px;font-weight:600;border:1px solid var(--c3)}
+.bd.ok{align-self:flex-start;background:var(--tint);color:var(--ink);padding:1px 10px;border-radius:999px;font-weight:600;border:1px solid #3f9b5a}
 @media(max-width:700px){.prog{grid-template-columns:1fr;margin:34px 0 14px}}
 h2.sec{margin:22px 4px 12px}
 .tag{display:inline-block;font-size:.72rem;padding:2px 10px;border-radius:999px;background:var(--tint);color:var(--ink);margin-left:8px;font-weight:500;vertical-align:2px}
@@ -259,7 +259,8 @@ h2.sec{margin:22px 4px 12px}
       <div class="two eq">
         <div class="card"><div id="pubSchBar"></div></div>
         <div class="card mini">
-          <table><thead><tr><th>สำนักวิชา</th><th>Q1</th><th>Q2</th><th>รวม (เรื่อง)</th><th>ร้อยละ</th></tr></thead><tbody id="pubSchT"></tbody></table>
+          <table><thead><tr><th>สำนักวิชา</th><th><i class="dot" style="background:#3f9b5a"></i>Q1</th><th><i class="dot" style="background:#f2c230"></i>Q2</th><th><i class="dot" style="background:#f08c2e"></i>Q3</th><th><i class="dot" style="background:#d9443f"></i>Q4</th><th>รวม (เรื่อง)</th><th>ร้อยละ</th></tr></thead><tbody id="pubSchT"></tbody></table>
+          <p class="note" id="pubSchS" style="font-weight:600;color:var(--ink)"></p>
           <p class="note">แสดงเฉพาะสำนักวิชาที่มีผลงานตีพิมพ์ เรียงจากมากไปน้อย</p>
           <p class="note" id="pubSchW" style="color:var(--rust);font-weight:600"></p>
         </div>
@@ -284,6 +285,7 @@ const fmt = (n, d = 0) => n.toLocaleString("en-US", {minimumFractionDigits: d, m
 let SAGE, PALE, SAND, BLUE, C5, C6;
 function readTheme() { const g = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim(); SAGE = g("--c1"); PALE = g("--c2"); SAND = g("--c3"); BLUE = g("--c4"); C5 = g("--c5"); C6 = g("--c6"); }
 readTheme();
+const QC = {Q1: "#3f9b5a", Q2: "#f2c230", Q3: "#f08c2e", Q4: "#d9443f"};   // สีควอไทล์มาตรฐาน (Q1 เขียว, Q2 เหลือง, Q3 ส้ม, Q4 แดง)
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 const sum = (a, i) => a.reduce((s, r) => s + r[i], 0);
 
@@ -355,7 +357,7 @@ async function fetchAll() {
     recStatus: !rr ? "missing" : ((rr.labels[0] || "") === "โครงการที่" ? "ok" : "header"),
     recLabel: rr ? esc(rr.labels[0] || "") : "",
     recSchool: (rr && (rr.labels[0] || "") === "โครงการที่") ? rr.map(r => [num(r[0]), esc(r[1]), num(r[2]), num(r[3]), num(r[4]), num(r[5]), num(r[6])]).filter(x => x[0] > 0 && x[1]) : [],
-    projSchool: (pp && (pp.labels[0] || "") === "โครงการที่") ? pp.map(r => [num(r[0]), esc(r[1]), num(r[2]), num(r[3])]).filter(x => x[0] > 0 && x[1]) : []
+    projSchool: (pp && (pp.labels[0] || "") === "โครงการที่") ? pp.map(r => [num(r[0]), esc(r[1]), num(r[2]), num(r[3]), num(r[4]), num(r[5])]).filter(x => x[0] > 0 && x[1]) : []
   };
 }
 
@@ -533,11 +535,11 @@ function render(D) {
     [`ผลงาน Q1 (เป้าหมาย ${T.goal} เรื่อง)`, `${T.q1} เรื่อง (${pc(T.q1, T.goal)} ของเป้า)`],
     ["ผลงาน Q2", T.q2 + " เรื่อง"]
   ].map(([x, y]) => `<div class="card">${x}<b>${y}</b></div>`).join("");
-  hbar("pubBar", f.map(r => [r[0], [r[8], r[9], Math.max(0, r[6] - r[8] - r[9])]]), ["Q1", "Q2", "ยังไม่ตีพิมพ์"], [SAGE, SAND, REST], "เรื่อง");
-  donut("pubD", [["Q1", T.q1, SAGE], ["Q2", T.q2, SAND], ["ยังไม่ตีพิมพ์", rest, REST]], T.q1 + T.q2 + rest, "pubT", "เรื่อง");
+  hbar("pubBar", f.map(r => [r[0], [r[8], r[9], Math.max(0, r[6] - r[8] - r[9])]]), ["Q1", "Q2", "ยังไม่ตีพิมพ์"], [QC.Q1, QC.Q2, REST], "เรื่อง");
+  donut("pubD", [["Q1", T.q1, QC.Q1], ["Q2", T.q2, QC.Q2], ["ยังไม่ตีพิมพ์", rest, REST]], T.q1 + T.q2 + rest, "pubT", "เรื่อง");
   const mp = Math.max(100, ...f.map(r => r[7] ? r[8] / r[7] * 100 : 0));
   $("pubGoal").innerHTML = f.map(r => {
-    const g = r[7], v = r[8], p = g ? v / g * 100 : 0, hit = g > 0 && v >= g, col = hit ? SAND : SAGE;
+    const g = r[7], v = r[8], p = g ? v / g * 100 : 0, hit = g > 0 && v >= g, col = QC.Q1;
     const tx = g ? (hit ? `<em class="bd ok">✓ บรรลุเป้าหมาย${v > g ? ` (เกิน ${v - g} เรื่อง)` : ""}</em>` : `<em class="bd">อีก ${g - v} เรื่องถึงเป้าหมาย</em>`) : "";
     const mark = g ? `<i class="tg" style="left:${100 / mp * 100}%"></i><span class="tgl" style="left:${100 / mp * 100}%">🏁 เป้าหมาย ${g} เรื่อง</span>` : "";
     const pin = g && v > 0 ? `<span class="pin" style="left:clamp(11px,${p / mp * 100}%,calc(100% - 11px));border-color:${col};background:${hit ? col : "#fff"}">${hit ? "✓" : ""}</span>` : "";
@@ -547,39 +549,43 @@ function render(D) {
   const pps = D.projSchool || [];
   // ผลงานรายโครงการ แยกตามสำนักวิชาและ Q (แท็บ "ผลงานรายโครงการ")
   const pjd = f.map((r, i) => {
-    const m = {}; pps.filter(x => x[0] === i + 1).forEach(x => { const o = m[x[1]] || (m[x[1]] = {n: x[1], q1: 0, q2: 0}); o.q1 += x[2]; o.q2 += x[3]; });
-    return Object.values(m).filter(x => x.q1 + x.q2 > 0).sort((a, b) => (b.q1 + b.q2) - (a.q1 + a.q2) || b.q1 - a.q1);
+    const m = {}; pps.filter(x => x[0] === i + 1).forEach(x => { const o = m[x[1]] || (m[x[1]] = {n: x[1], q1: 0, q2: 0, q3: 0, q4: 0}); o.q1 += x[2]; o.q2 += x[3]; o.q3 += x[4] || 0; o.q4 += x[5] || 0; });
+    const tt = x => x.q1 + x.q2 + x.q3 + x.q4;
+    return Object.values(m).filter(x => tt(x) > 0).sort((a, b) => tt(b) - tt(a) || b.q1 - a.q1);
   });
   const anyPj = pjd.some(a => a.length);
   const stt = D.projStatus, lab = D.projLabel || "";
   $("pubProjN").textContent = anyPj ? "" : (!stt ? "ยังไม่ได้เชื่อม Google ชีต จึงยังไม่มีข้อมูลผลงานแยกตามสำนักวิชา"
-    : stt === "ok" ? `พบแท็บ "ผลงานรายโครงการ" แล้ว แต่ยังไม่มีตัวเลข Q1/Q2 (เป็น 0 หรือว่างทั้งหมด) กรุณากรอกตัวเลขในคอลัมน์ C และ D`
+    : stt === "ok" ? `พบแท็บ "ผลงานรายโครงการ" แล้ว แต่ยังไม่มีตัวเลขผลงาน (เป็น 0 หรือว่างทั้งหมด) กรุณากรอกตัวเลขในคอลัมน์ C (Q1), D (Q2), E (Q3) และ F (Q4)`
     : (stt === "header" && lab !== "สำนักวิชา") ? `พบแท็บ "ผลงานรายโครงการ" แต่ช่อง A1 เป็น "${lab}" ต้องเป็น "โครงการที่"`
     : `ไม่พบแท็บ "ผลงานรายโครงการ" ใน Google ชีต (ตรวจชื่อแท็บให้ตรงตัว) กราฟด้านล่างจึงยังไม่มีข้อมูลแยกสำนักวิชา`);
   {
     $("pubProj").innerHTML = f.map((r, i) => {
       const g = r[7], q1 = r[8], q2 = r[9], hit = g > 0 && q1 >= g, p = g ? q1 / g * 100 : 0, mx = Math.max(100, p);
-      const a1 = pjd[i].reduce((s, x) => s + x.q1, 0), a2 = pjd[i].reduce((s, x) => s + x.q2, 0);
+      const a1 = pjd[i].reduce((s, x) => s + x.q1, 0), a2 = pjd[i].reduce((s, x) => s + x.q2, 0), a3 = pjd[i].reduce((s, x) => s + x.q3, 0), a4 = pjd[i].reduce((s, x) => s + x.q4, 0);
       const st = g ? (hit ? `<em class="bd ok">✓ บรรลุเป้า Q1${q1 > g ? ` (เกิน ${q1 - g} เรื่อง)` : ""}</em>` : `<em class="bd">อีก ${g - q1} เรื่องถึงเป้า Q1</em>`) : "";
-      const bar = g ? `<div class="prog" style="grid-template-columns:1fr;margin:28px 0 10px"><div class="tr"><div class="fl" style="width:${p / mx * 100}%;background:${hit ? SAND : SAGE}"></div><i class="tg" style="left:${100 / mx * 100}%"></i><span class="tgl" style="left:${100 / mx * 100}%">🏁 เป้าหมาย Q1 ${g} เรื่อง</span>${q1 > 0 ? `<span class="pin" style="left:clamp(11px,${p / mx * 100}%,calc(100% - 11px));border-color:${hit ? SAND : SAGE};background:${hit ? SAND : "#fff"}">${hit ? "✓" : ""}</span>` : ""}</div></div>` : "";
+      const bar = g ? `<div class="prog" style="grid-template-columns:1fr;margin:28px 0 10px"><div class="tr"><div class="fl" style="width:${p / mx * 100}%;background:${QC.Q1}"></div><i class="tg" style="left:${100 / mx * 100}%"></i><span class="tgl" style="left:${100 / mx * 100}%">🏁 เป้าหมาย Q1 ${g} เรื่อง</span>${q1 > 0 ? `<span class="pin" style="left:clamp(11px,${p / mx * 100}%,calc(100% - 11px));border-color:${QC.Q1};background:${hit ? QC.Q1 : "#fff"}">${hit ? "✓" : ""}</span>` : ""}</div></div>` : "";
       const warn = pjd[i].length && (a1 !== q1 || a2 !== q2) ? `<p class="note" style="color:var(--rust);font-weight:600">⚠ ยอดแยกสำนักวิชา (Q1 ${a1} / Q2 ${a2}) ไม่ตรงกับยอดของโครงการ (Q1 ${q1} / Q2 ${q2})</p>` : "";
-      return `<div class="card"><h2>${r[0]}</h2><div class="pm"><span>ต้องตีพิมพ์ <b>${r[6]}</b> เรื่อง</span><span>เป้าหมาย Q1 <b>${g}</b> เรื่อง</span><span>ทำได้ Q1 <b>${q1}</b> · Q2 <b>${q2}</b> (รวม <b>${q1 + q2}</b>)</span>${st}</div>${bar}${pjd[i].length ? `<div id="pjB${i}"></div>` : `<p class="note">ยังไม่มีข้อมูลผลงานแยกตามสำนักวิชาของโครงการนี้</p>`}${warn}</div>`;
+      return `<div class="card"><h2>${r[0]}</h2><div class="pm"><span>ต้องตีพิมพ์ <b>${r[6]}</b> เรื่อง</span><span>เป้าหมาย Q1 <b>${g}</b> เรื่อง</span><span>ทำได้ Q1 <b>${q1}</b> · Q2 <b>${q2}</b> (รวม <b>${q1 + q2}</b>)</span>${a3 + a4 ? `<span>Q3–Q4 <b>${a3 + a4}</b> เรื่อง (Q3 ${a3} · Q4 ${a4})</span>` : ""}${st}</div>${bar}${pjd[i].length ? `<div id="pjB${i}"></div>` : `<p class="note">ยังไม่มีข้อมูลผลงานแยกตามสำนักวิชาของโครงการนี้</p>`}${warn}</div>`;
     }).join("");
-    pjd.forEach((a, i) => { if (a.length) hbar("pjB" + i, a.map(x => [x.n, [x.q1, x.q2]]), ["Q1", "Q2"], [SAGE, SAND], "เรื่อง"); });
+    pjd.forEach((a, i) => { if (a.length) { const q34 = a.some(x => x.q3 + x.q4 > 0); hbar("pjB" + i, a.map(x => [x.n, q34 ? [x.q1, x.q2, x.q3, x.q4] : [x.q1, x.q2]]), q34 ? ["Q1", "Q2", "Q3", "Q4"] : ["Q1", "Q2"], q34 ? [QC.Q1, QC.Q2, QC.Q3, QC.Q4] : [QC.Q1, QC.Q2], "เรื่อง"); } });
   }
 
   // ผลงานตีพิมพ์แยกตามสำนักวิชา (คอลัมน์ G/H ของแท็บ "สำนักวิชา")
   const bySch = {};
-  pps.forEach(x => { const o = bySch[x[1]] || (bySch[x[1]] = {n: x[1], q1: 0, q2: 0}); o.q1 += x[2]; o.q2 += x[3]; });
-  const srcRows = pps.length ? Object.values(bySch) : sc.map(r => ({n: r[0], q1: r[6] || 0, q2: r[7] || 0}));
-  const ps = srcRows.filter(x => x.q1 + x.q2 > 0).sort((x, y) => (y.q1 + y.q2) - (x.q1 + x.q2) || y.q1 - x.q1);
-  const sq1 = ps.reduce((s, x) => s + x.q1, 0), sq2 = ps.reduce((s, x) => s + x.q2, 0), spt = sq1 + sq2;
+  pps.forEach(x => { const o = bySch[x[1]] || (bySch[x[1]] = {n: x[1], q1: 0, q2: 0, q3: 0, q4: 0}); o.q1 += x[2]; o.q2 += x[3]; o.q3 += x[4] || 0; o.q4 += x[5] || 0; });
+  const srcRows = pps.length ? Object.values(bySch) : sc.map(r => ({n: r[0], q1: r[6] || 0, q2: r[7] || 0, q3: 0, q4: 0}));
+  const ttq = x => x.q1 + x.q2 + x.q3 + x.q4;
+  const ps = srcRows.filter(x => ttq(x) > 0).sort((x, y) => ttq(y) - ttq(x) || y.q1 - x.q1);
+  const sq1 = ps.reduce((s, x) => s + x.q1, 0), sq2 = ps.reduce((s, x) => s + x.q2, 0), sq3 = ps.reduce((s, x) => s + x.q3, 0), sq4 = ps.reduce((s, x) => s + x.q4, 0), spt = sq1 + sq2 + sq3 + sq4;
   $("pubSchWrap").style.display = spt ? "" : "none";
   if (spt) {
-    hbar("pubSchBar", ps.map(x => [x.n, [x.q1, x.q2]]), ["Q1", "Q2"], [SAGE, SAND], "เรื่อง");
-    $("pubSchT").innerHTML = ps.map(x => `<tr><td>${x.n}</td><td>${x.q1}</td><td>${x.q2}</td><td><b>${x.q1 + x.q2}</b></td><td>${((x.q1 + x.q2) / spt * 100).toFixed(1)}%</td></tr>`).join("")
-      + `<tr class="grp"><td>รวม</td><td>${sq1}</td><td>${sq2}</td><td>${spt}</td><td>100%</td></tr>`;
-    $("pubSchW").textContent = (sq1 !== T.q1 || sq2 !== T.q2) ? `⚠ ยอดตามสำนักวิชา (Q1 ${sq1} / Q2 ${sq2}) ไม่ตรงกับยอดตามโครงการ (Q1 ${T.q1} / Q2 ${T.q2}) กรุณาตรวจสอบข้อมูลใน Google ชีต` : "";
+    hbar("pubSchBar", ps.map(x => [x.n, [x.q1, x.q2, x.q3, x.q4]]), ["Q1", "Q2", "Q3", "Q4"], [QC.Q1, QC.Q2, QC.Q3, QC.Q4], "เรื่อง");
+    $("pubSchT").innerHTML = ps.map(x => `<tr><td>${x.n}</td><td>${x.q1}</td><td>${x.q2}</td><td>${x.q3}</td><td>${x.q4}</td><td><b>${ttq(x)}</b></td><td>${(ttq(x) / spt * 100).toFixed(1)}%</td></tr>`).join("")
+      + `<tr class="grp"><td>รวม</td><td>${sq1}</td><td>${sq2}</td><td>${sq3}</td><td>${sq4}</td><td>${spt}</td><td>100%</td></tr>`;
+    $("pubSchS").textContent = `ผลงานตีพิมพ์ทั้งหมดจากนักศึกษาทุน (Q1–Q4) ${spt} เรื่อง · Q1–Q2 ${sq1 + sq2} เรื่อง · Q3–Q4 ${sq3 + sq4} เรื่อง`;
+    if (pps.length) $("pubKpi").innerHTML += `<div class="card">ผลงานตีพิมพ์จริงทั้งหมด (Q1–Q4)<b>${spt} เรื่อง</b></div>`;
+    $("pubSchW").textContent = (sq1 !== T.q1 || sq2 !== T.q2) ? `⚠ ยอด Q1–Q2 ตามสำนักวิชา (Q1 ${sq1} / Q2 ${sq2}) ไม่ตรงกับยอดตามโครงการ (Q1 ${T.q1} / Q2 ${T.q2}) กรุณาตรวจสอบข้อมูลใน Google ชีต` : "";
   }
 }
 
