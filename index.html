@@ -584,7 +584,7 @@ function render(D) {
     $("pubSchT").innerHTML = ps.map(x => `<tr><td>${x.n}</td><td>${x.q1}</td><td>${x.q2}</td><td>${x.q3}</td><td>${x.q4}</td><td><b>${ttq(x)}</b></td><td>${(ttq(x) / spt * 100).toFixed(1)}%</td></tr>`).join("")
       + `<tr class="grp"><td>รวม</td><td>${sq1}</td><td>${sq2}</td><td>${sq3}</td><td>${sq4}</td><td>${spt}</td><td>100%</td></tr>`;
     $("pubSchS").textContent = `ผลงานตีพิมพ์ทั้งหมดจากนักศึกษาทุน (Q1–Q4) ${spt} เรื่อง · Q1–Q2 ${sq1 + sq2} เรื่อง · Q3–Q4 ${sq3 + sq4} เรื่อง`;
-    if (pps.length) $("pubKpi").innerHTML += `<div class="card">ผลงานตีพิมพ์จริงทั้งหมด (Q1–Q4)<b>${spt} เรื่อง</b></div>`;
+    if (pps.length) $("pubKpi").innerHTML += `<div class="card">ผลงาน Q3–Q4<b>${sq3 + sq4} เรื่อง</b></div><div class="card">ผลงานตีพิมพ์จริงทั้งหมด (Q1–Q4)<b>${spt} เรื่อง</b></div>`;
     $("pubSchW").textContent = (sq1 !== T.q1 || sq2 !== T.q2) ? `⚠ ยอด Q1–Q2 ตามสำนักวิชา (Q1 ${sq1} / Q2 ${sq2}) ไม่ตรงกับยอดตามโครงการ (Q1 ${T.q1} / Q2 ${T.q2}) กรุณาตรวจสอบข้อมูลใน Google ชีต` : "";
   }
 }
