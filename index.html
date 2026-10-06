@@ -232,11 +232,11 @@ h2.sec{margin:22px 4px 12px}
   <section class="panel" id="p3">
     <div class="card scroll">
       <h2>ตารางสรุปจำนวนผลงานตีพิมพ์แยกตามโครงการทุน</h2>
-      <table class="grid" style="min-width:860px">
-        <thead><tr><th>ชื่อโครงการทุน / ปีการศึกษา</th><th>จำนวนผลงานที่ต้องตีพิมพ์ทั้งหมด</th><th>เป้าหมาย (Q1)</th><th>Q1</th><th>Q2</th><th>รวมผลงานปัจจุบัน</th><th>งบประมาณโครงการ (บาท)</th><th>เฉลี่ยต่อยอดที่ต้องตีพิมพ์ (บาท)</th></tr></thead>
+      <table class="grid" style="min-width:1020px">
+        <thead><tr><th>ชื่อโครงการทุน / ปีการศึกษา</th><th>จำนวนผลงานที่ต้องตีพิมพ์ทั้งหมด</th><th>เป้าหมาย (Q1)</th><th>Q1</th><th>Q2</th><th>รวมผลงานปัจจุบัน</th><th>งบประมาณโครงการ (บาท)</th><th>เฉลี่ยต่อยอดที่ต้องตีพิมพ์ (บาท)</th><th>เฉลี่ยต่อผลงานตีพิมพ์จริง (บาท) **</th></tr></thead>
         <tbody id="t2"></tbody><tfoot id="t2f"></tfoot>
       </table>
-      <p class="note">หมายเหตุ: กำหนดเป้าหมายผลงานตีพิมพ์ในฐานข้อมูล Scopus ระดับ Q1 ของแต่ละโครงการต้องไม่ต่ำกว่าร้อยละ 50<br>* จำนวนเงินทุนการศึกษาเฉลี่ยต่อผลงานที่ต้องตีพิมพ์ = งบประมาณโครงการทั้งหมด หารด้วย จำนวนผลงานที่ต้องตีพิมพ์รวมทั้งหมดตามข้อตกลงและสัญญาของโครงการทุน</p>
+      <p class="note">หมายเหตุ: กำหนดเป้าหมายผลงานตีพิมพ์ในฐานข้อมูล Scopus ระดับ Q1 ของแต่ละโครงการต้องไม่ต่ำกว่าร้อยละ 50<br>* จำนวนเงินทุนการศึกษาเฉลี่ยต่อผลงานที่ต้องตีพิมพ์ = งบประมาณโครงการทั้งหมด หารด้วย จำนวนผลงานที่ต้องตีพิมพ์รวมทั้งหมดตามข้อตกลงและสัญญาของโครงการทุน<br><span id="t2N"></span></p>
     </div>
     <h2 class="sec">สรุปตัวเลขสำคัญ <span class="tag">ภาพรวมทุกโครงการ</span></h2>
     <div class="stats" id="pubKpi"></div>
@@ -521,9 +521,12 @@ function render(D) {
 
   // แท็บผลงานตีพิมพ์
   const pct = (n, t) => `${n} (${t ? (n / t * 100).toFixed(2) : "0.00"}%)`;
-  $("t2").innerHTML = f.map(r => { T.req += r[6]; T.goal += r[7]; T.q1 += r[8]; T.q2 += r[9];
-    return `<tr><td>${r[0]}</td><td>${r[6]}</td><td>${r[7]}</td><td>${pct(r[8], r[6])}</td><td>${pct(r[9], r[6])}</td><td>${r[8] + r[9]}</td><td>${fmt(r[5])}</td><td>${avg(r[5], r[6])}</td></tr>`; }).join("");
-  $("t2f").innerHTML = `<tr><td>ยอดรวมทั้งสิ้น</td><td>${T.req}</td><td>${T.goal}</td><td>${T.q1}</td><td>${T.q2}</td><td>${T.q1 + T.q2}</td><td>${fmt(T.b)}</td><td>${avg(T.b, T.req)}</td></tr>`;
+  // ผลงานตีพิมพ์จริงตามประกาศ = Q1 + Q2 เท่านั้น (Q3-Q4 เป็นผลพลอยได้ ไม่นำมาคำนวณ) ถ้าไม่มีผลงานเลยแสดง N/A
+  const avgA = (b, n) => n ? fmt(b / n, 2) : "N/A";
+  $("t2").innerHTML = f.map(r => { const act = r[8] + r[9]; T.req += r[6]; T.goal += r[7]; T.q1 += r[8]; T.q2 += r[9];
+    return `<tr><td>${r[0]}</td><td>${r[6]}</td><td>${r[7]}</td><td>${pct(r[8], r[6])}</td><td>${pct(r[9], r[6])}</td><td>${r[8] + r[9]}</td><td>${fmt(r[5])}</td><td>${avg(r[5], r[6])}</td><td>${avgA(r[5], act)}</td></tr>`; }).join("");
+  $("t2f").innerHTML = `<tr><td>ยอดรวมทั้งสิ้น</td><td>${T.req}</td><td>${T.goal}</td><td>${T.q1}</td><td>${T.q2}</td><td>${T.q1 + T.q2}</td><td>${fmt(T.b)}</td><td>${avg(T.b, T.req)}</td><td>${avgA(T.b, T.q1 + T.q2)}</td></tr>`;
+  $("t2N").textContent = `** เฉลี่ยต่อผลงานตีพิมพ์จริง = งบประมาณโครงการ ÷ ผลงานตีพิมพ์จริงระดับ Q1 และ Q2 ตามที่ประกาศกำหนด (Q3–Q4 ไม่นำมาคำนวณ) โครงการที่ยังไม่มีผลงานแสดงเป็น N/A`;
 
   // กราฟผลงานตีพิมพ์
   const pub = T.q1 + T.q2, rest = Math.max(0, T.req - pub), REST = "#e2dfd0";
@@ -584,7 +587,7 @@ function render(D) {
     $("pubSchT").innerHTML = ps.map(x => `<tr><td>${x.n}</td><td>${x.q1}</td><td>${x.q2}</td><td>${x.q3}</td><td>${x.q4}</td><td><b>${ttq(x)}</b></td><td>${(ttq(x) / spt * 100).toFixed(1)}%</td></tr>`).join("")
       + `<tr class="grp"><td>รวม</td><td>${sq1}</td><td>${sq2}</td><td>${sq3}</td><td>${sq4}</td><td>${spt}</td><td>100%</td></tr>`;
     $("pubSchS").textContent = `ผลงานตีพิมพ์ทั้งหมดจากนักศึกษาทุน (Q1–Q4) ${spt} เรื่อง · Q1–Q2 ${sq1 + sq2} เรื่อง · Q3–Q4 ${sq3 + sq4} เรื่อง`;
-    if (pps.length) $("pubKpi").innerHTML += `<div class="card">ผลงาน Q3–Q4<b>${sq3 + sq4} เรื่อง</b></div><div class="card">ผลงานตีพิมพ์จริงทั้งหมด (Q1–Q4)<b>${spt} เรื่อง</b></div>`;
+    if (pps.length) $("pubKpi").innerHTML += `<div class="card">ผลงาน Q3–Q4<b>${sq3 + sq4} เรื่อง</b></div><div class="card">ผลงานตีพิมพ์รวม (Q1–Q4)<b>${spt} เรื่อง</b></div>`;
     $("pubSchW").textContent = (sq1 !== T.q1 || sq2 !== T.q2) ? `⚠ ยอด Q1–Q2 ตามสำนักวิชา (Q1 ${sq1} / Q2 ${sq2}) ไม่ตรงกับยอดตามโครงการ (Q1 ${T.q1} / Q2 ${T.q2}) กรุณาตรวจสอบข้อมูลใน Google ชีต` : "";
   }
 }
